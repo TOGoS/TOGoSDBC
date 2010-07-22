@@ -19,6 +19,9 @@ class ParameterizerTest extends TestCase
 	function testStringParameter() {
 		$this->assertEquals( "select 'xxx'", $this->PZR->parameterize("select {value}",array('value'=>'xxx')) );
 	}
+	function testStringWithQuoteParameter() {
+		$this->assertEquals( "select 'xx''yy'", $this->PZR->parameterize("select {value}",array('value'=>"xx'yy")) );
+	}
 	function testIntParameter() {
 		$this->assertEquals( "select 123", $this->PZR->parameterize("select {value}",array('value'=>123)) );
 	}
@@ -26,11 +29,11 @@ class ParameterizerTest extends TestCase
 		$this->assertEquals( "select ('xxx','yyy')", $this->PZR->parameterize("select {value}",array('value'=>array('xxx','yyy'))) );
 	}
 	function testSomeParameters() {
-		$e = "select Mass from Thing where ID = 45 or Name in ('Coffee Cup','Radish')";
+		$e = "select Mass from Thing where ID = 456 or Name in ('Coffee Cup','Radish')";
 		$i = "select {column} from {table} where ID = {id} or Name in {names}";
 		$a = array('column'=>new SQLLiteral('Mass'),
 				   'table'=>new SQLLiteral('Thing'),
-				   'id'=>123,
+				   'id'=>456,
 				   'names'=>array('Coffee Cup','Radish'));
 		$this->assertEquals( $e, $this->PZR->parameterize($i,$a) );
 	}
