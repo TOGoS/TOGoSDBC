@@ -2,7 +2,7 @@
 
 namespace TOGoS\DBC;
 
-interface SQLResult extends IteratorAggregate
+interface SQLResult extends \IteratorAggregate
 {
 	/**
 	 * @returns array an array of associative arrays, one per result row;
@@ -21,5 +21,5 @@ interface SQLResult extends IteratorAggregate
 	 *   This can be expected to be called only once and not in combination
 	 *   with getRows.
 	 */
-	public function getIterator();
+	//public function getIterator();
 }
