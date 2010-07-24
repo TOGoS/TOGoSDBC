@@ -4,6 +4,7 @@ namespace TOGoS\DBC\Util;
 
 use PHPUnit\Framework\TestCase;
 use TOGoS\DBC\SQLLiteral;
+use TOGoS\DBC\SQLIdentifier;
 
 class ParameterizerTest extends TestCase
 {
@@ -27,6 +28,12 @@ class ParameterizerTest extends TestCase
 	}
 	function testArrayParameter() {
 		$this->assertEquals( "select ('xxx','yyy')", $this->PZR->parameterize("select {value}",array('value'=>array('xxx','yyy'))) );
+	}
+	function testIdentifierParameter() {
+		$this->assertEquals( "select `Foo``Bar` from `Baz`",
+							 $this->PZR->parameterize("select {column} from {table}",
+													  array('column'=>new SQLIdentifier('Foo`Bar'),
+															'table'=>new SQLIdentifier('Baz'))));
 	}
 	function testSomeParameters() {
 		$e = "select Mass from Thing where ID = 456 or Name in ('Coffee Cup','Radish')";
