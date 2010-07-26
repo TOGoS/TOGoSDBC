@@ -19,7 +19,6 @@ class MySQLExecutor implements SQLExecutor
 		$newLink = @$conf['new-link'];
 		$flags = @$conf['flags'] or $flags = 0;
 		$db = @$conf['database'];
-		if( $reuse === null ) $reuse = true;
 		$mysqlLink = mysql_connect( $host, $user, $pass, $newLink, $flags );
 		if( $mysqlLink === false ) {
 			throw new DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
