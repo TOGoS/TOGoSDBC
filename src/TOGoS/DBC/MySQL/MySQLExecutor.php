@@ -18,15 +18,14 @@ class MySQLExecutor implements SQLExecutor
 		$pass = @$conf['password'];
 		$newLink = @$conf['new-link'];
 		$flags = @$conf['flags'] or $flags = 0;
-		$db = @$conf['database'];
 		$mysqlLink = mysql_connect( $host, $user, $pass, $newLink, $flags );
-		if( $charset = @$conf['charset'] ) {
-			mysql_set_charset( $charset, $mysqlLink );
-		} 
 		if( $mysqlLink === false ) {
 			throw new DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
 		}
-		if( $db ) {
+		if( $charset = @$conf['charset'] ) {
+			mysql_set_charset( $charset, $mysqlLink );
+		} 
+		if( $db = @$conf['database'] ) {
 			mysql_select_db( $db, $mysqlLink );
 		}
 		return new MySQLExecutor($mysqlLink);
