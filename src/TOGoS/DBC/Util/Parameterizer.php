@@ -13,9 +13,13 @@ class Parameterizer
 		return self::$instance;
 	}
 	
+	protected function sqlEncodeString( $value ) {
+		return "'".str_replace("'","''",$value)."'";
+	}
+	
 	public function sqlEncode( $value ) {
 		if( is_string($value) ) {
-			return "'".str_replace("'","''",$value)."'";
+			return $this->sqlEncodeString( $value );
 		} else if( is_int($value) ) {
 			return (string)$value;
 		} else if( is_array($value) ) {
