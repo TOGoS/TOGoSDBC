@@ -10,5 +10,5 @@ interface SQLExecutor
 	 * @return SQLResult
 	 * @throws DBException
 	 */
-	public function execute( $sql, $args );
+	public function execute( $sql, array $args=array() );
 }

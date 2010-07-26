@@ -39,7 +39,7 @@ class MySQLExecutor implements SQLExecutor
 		$this->mysqlLink = $mysqlLink;
 	}
 	
-	function execute( $inSql, $args ) {
+	function execute( $inSql, array $args=array() ) {
 		$sql = Parameterizer::getInstance()->parameterize( $inSql, $args );
 		$mysqlResult = mysql_query( $sql, $this->mysqlLink );
 		if( $mysqlResult === false ) {
