@@ -20,6 +20,9 @@ class MySQLExecutor implements SQLExecutor
 		$flags = @$conf['flags'] or $flags = 0;
 		$db = @$conf['database'];
 		$mysqlLink = mysql_connect( $host, $user, $pass, $newLink, $flags );
+		if( $charset = @$conf['charset'] ) {
+			mysql_set_charset( $charset, $mysqlLink );
+		} 
 		if( $mysqlLink === false ) {
 			throw new DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
 		}
