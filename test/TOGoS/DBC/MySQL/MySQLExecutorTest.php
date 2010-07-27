@@ -4,25 +4,22 @@ namespace TOGoS\DBC\MySQL;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use TOGoS\DBC;
 use TOGoS\DBC\SQLIdentifier;
 use TOGoS\DBC\SQLException;
-use TOGoS\DBC;
+use TOGoS\DBC\TestConfig;
 
 /**
  * Test that we can connect to the master DB server and run some queries.
  */
 class MySQLExecutorTest extends TestCase
 {
-	public static $testConfig; 
-	
 	public function setUp() {
-		// TODO: Get $testConfig from somewhere else.
-		// Loading this class to set it seems to prevent PHPUnit from running it!
-		if( self::$testConfig === null ) {
-			$this->markTestSkipped(get_class($this)."::\$testConfig undefined.");
+		if( TestConfig::$mysqlTestConfig === null ) {
+			$this->markTestSkipped("TOGoS\\DBC\\TestConfig::\$mysqlTestConfig undefined.");
 			return;
 		}
-		$this->executor = DBC::createExecutorFromConfig(self::$testConfig);
+		$this->executor = DBC::createExecutorFromConfig(TestConfig::$mysqlTestConfig);
 	}
 	
 	public function testCreateTable() {
@@ -77,5 +74,6 @@ class MySQLExecutorTest extends TestCase
 		$this->_testValueEncDec("foo\\'bar");
 		$this->_testValueEncDec("foo\\'bar");
 		$this->_testValueEncDec("\x00, \n, \r, \, ', \" and \x1a");
+		$this->_testValueEncDec("foo\\'; drop all them tables'; drop all them tables --");
 	}
 }
