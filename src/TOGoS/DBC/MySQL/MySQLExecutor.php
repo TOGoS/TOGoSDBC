@@ -4,7 +4,6 @@ namespace TOGoS\DBC\MySQL;
 
 use TOGoS\DBC\SQLExecutor;
 use TOGoS\DBC\SQLException;
-use TOGoS\DBC\Util\Parameterizer;
 use TOGoS\DBC\Util\BasicSQLResult;
 
 class MySQLExecutor implements SQLExecutor
@@ -40,7 +39,7 @@ class MySQLExecutor implements SQLExecutor
 	}
 	
 	function execute( $inSql, array $args=array() ) {
-		$sql = Parameterizer::getInstance()->parameterize( $inSql, $args );
+		$sql = MySQLParameterizer::getInstance()->parameterize( $inSql, $args );
 		$mysqlResult = mysql_query( $sql, $this->mysqlLink );
 		if( $mysqlResult === false ) {
 			throw new SQLException( mysql_error($this->mysqlLink), $sql );
