@@ -3,8 +3,9 @@
 namespace TOGoS\DBC\Util;
 
 use PHPUnit\Framework\TestCase;
-use TOGoS\DBC\SQLLiteral;
+use TOGoS\DBC\SQLException;
 use TOGoS\DBC\SQLIdentifier;
+use TOGoS\DBC\SQLLiteral;
 
 class ParameterizerTest extends TestCase
 {
@@ -43,5 +44,14 @@ class ParameterizerTest extends TestCase
 				   'id'=>456,
 				   'names'=>array('Coffee Cup','Radish'));
 		$this->assertEquals( $e, $this->PZR->parameterize($i,$a) );
+	}
+	function testMissingParameter() {
+		$sql = "SELECT {foo}, {bar}, {baz}";
+		$args = array('bar'=>1,'baz'=>2);
+		try {
+			$this->PZR->parameterize($sql,$args);
+			$this->fail("Parameterizer should have thrown SQLException due to missing arguments");
+		} catch( SQLException $e ) {
+		}
 	}
 }

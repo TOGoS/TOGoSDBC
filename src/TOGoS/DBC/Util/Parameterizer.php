@@ -2,7 +2,7 @@
 
 namespace TOGoS\DBC\Util;
 
-use TOGoS\DBC\DBException;
+use TOGoS\DBC\SQLException;
 use TOGoS\DBC\SQLLiteral;
 
 class Parameterizer
@@ -29,7 +29,7 @@ class Parameterizer
 		} else if( $value instanceof SQLLiteral ) {
 			return (string)$value;
 		} else {
-			throw new DBException( "Don't know how to SQL-encode value of type/class ".gettype($value).'/'.get_class($value) );
+			throw new SQLException( "Don't know how to SQL-encode value of type/class ".gettype($value).'/'.get_class($value) );
 		}
 	}
 	
@@ -38,7 +38,7 @@ class Parameterizer
 		$parameterizer = $this;
 		return preg_replace_callback( '/{([^}]+)}/', function($bif) use ($sql,$args,$parameterizer) {
 			if( !array_key_exists($bif[1],$args) ) {
-				throw new DBException( "Unspecified parameter {$bif[0]}", $sql, $args );
+				throw new SQLException( "Unspecified parameter {$bif[0]}", $sql, $args );
 			}
 			return $parameterizer->sqlEncode($args[$bif[1]]);
 		}, $sql);

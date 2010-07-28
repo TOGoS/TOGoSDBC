@@ -2,6 +2,9 @@
 
 namespace TOGoS\DBC;
 
+/**
+ * Thrown when there is an error parameterizing SQL or executing an SQL statement
+ */
 class SQLException extends DBException
 {
 	protected $sql;
