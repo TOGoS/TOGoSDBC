@@ -28,8 +28,10 @@ class Parameterizer
 			return '('.implode(',',$r).')';
 		} else if( $value instanceof SQLLiteral ) {
 			return (string)$value;
+		} else if( $value === null ) {
+			return 'NULL';
 		} else {
-			throw new SQLException( "Don't know how to SQL-encode value of type/class ".gettype($value).'/'.get_class($value) );
+			throw new SQLException( "Don't know how to SQL-encode value of type/class ".gettype($value).'/'.@get_class($value) );
 		}
 	}
 	
