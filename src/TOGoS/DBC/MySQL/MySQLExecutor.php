@@ -4,6 +4,7 @@ namespace TOGoS\DBC\MySQL;
 
 use TOGoS\DBC\SQLExecutor;
 use TOGoS\DBC\SQLException;
+use TOGoS\DBC\DBConnectionException;
 use TOGoS\DBC\Util\BasicSQLResult;
 
 class MySQLExecutor implements SQLExecutor
