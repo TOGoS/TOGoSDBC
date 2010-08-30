@@ -1,3 +1,3 @@
 #!/bin/sh
 
-phpunit --bootstrap src/init-autoloader.php --include-path src:test test
+phpunit --bootstrap util/init-autoloader.php --include-path src:test test
