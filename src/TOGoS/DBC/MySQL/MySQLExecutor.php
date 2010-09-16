@@ -34,13 +34,17 @@ class MySQLExecutor implements SQLExecutor
 	////
 
 	protected $mysqlLink;
+	protected $queryListeners = array();
 	
-	function __construct( $mysqlLink ) {
+	public function __construct( $mysqlLink ) {
 		$this->mysqlLink = $mysqlLink;
 	}
 	
-	function execute( $inSql, array $args=array() ) {
+	public function execute( $inSql, array $args=array() ) {
 		$sql = MySQLParameterizer::getInstance()->parameterize( $inSql, $args );
+		foreach( $this->queryListeners as $l ) {
+			call_user_func( $l, $inSql, $args, $sql );
+		}
 		$mysqlResult = mysql_query( $sql, $this->mysqlLink );
 		if( $mysqlResult === false ) {
 			throw new SQLException( mysql_error($this->mysqlLink), $sql );
@@ -53,5 +57,10 @@ class MySQLExecutor implements SQLExecutor
 		} 
 		$affectedRowCount = mysql_affected_rows($this->mysqlLink);
 		return new BasicSQLResult( $affectedRowCount, $rows );
+	}
+	
+	/** Interface for this may change - don't depend on it. */
+	public function addQueryListener( $f ) {
+		$this->queryListeners[] = $f;
 	}
 }
