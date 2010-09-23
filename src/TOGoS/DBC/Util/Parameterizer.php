@@ -26,6 +26,10 @@ class Parameterizer
 			$r = array();
 			foreach( $value as $x ) $r[] = $this->sqlEncode($x);
 			return '('.implode(',',$r).')';
+		} else if( $value === true ) {
+			return 'TRUE';
+		} else if( $value === false ) {
+			return 'FALSE';
 		} else if( $value instanceof SQLLiteral ) {
 			return (string)$value;
 		} else if( $value === null ) {

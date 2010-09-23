@@ -27,6 +27,9 @@ class ParameterizerTest extends TestCase
 	function testIntParameter() {
 		$this->assertEquals( "select 123", $this->PZR->parameterize("select {value}",array('value'=>123)) );
 	}
+	function testBooleanParameter() {
+		$this->assertEquals( "select TRUE, FALSE", $this->PZR->parameterize("select {t}, {f}",array('t'=>true, 'f'=>false)) );
+	}
 	function testNullParameter() {
 		$this->assertEquals( "select NULL", $this->PZR->parameterize("select {value}",array('value'=>null)) );
 	}
