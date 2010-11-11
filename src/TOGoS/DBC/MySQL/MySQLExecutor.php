@@ -1,13 +1,6 @@
 <?php
 
-namespace TOGoS\DBC\MySQL;
-
-use TOGoS\DBC\SQLExecutor;
-use TOGoS\DBC\SQLException;
-use TOGoS\DBC\DBConnectionException;
-use TOGoS\DBC\Util\BasicSQLResult;
-
-class MySQLExecutor implements SQLExecutor
+class TOGoS_DBC_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 {
 	public static function createFromConfig( $conf ) {
 		$host = $conf['host'];
@@ -20,7 +13,7 @@ class MySQLExecutor implements SQLExecutor
 		$flags = @$conf['flags'] or $flags = 0;
 		$mysqlLink = mysql_connect( $host, $user, $pass, $newLink, $flags );
 		if( $mysqlLink === false ) {
-			throw new DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
+			throw new TOGoS_DBC_DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
 		}
 		if( $charset = @$conf['charset'] ) {
 			mysql_set_charset( $charset, $mysqlLink );
@@ -47,7 +40,7 @@ class MySQLExecutor implements SQLExecutor
 		}
 		$mysqlResult = mysql_query( $sql, $this->mysqlLink );
 		if( $mysqlResult === false ) {
-			throw new SQLException( mysql_error($this->mysqlLink), $sql );
+			throw new TOGoS_DBC_SQLException( mysql_error($this->mysqlLink), $sql );
 		}
 		$rows = array();
 		if( is_resource($mysqlResult) ) {
@@ -56,7 +49,7 @@ class MySQLExecutor implements SQLExecutor
 			}
 		} 
 		$affectedRowCount = mysql_affected_rows($this->mysqlLink);
-		return new BasicSQLResult( $affectedRowCount, $rows );
+		return new TOGoS_DBC_Util_BasicSQLResult( $affectedRowCount, $rows );
 	}
 	
 	/** Interface for this may change - don't depend on it. */

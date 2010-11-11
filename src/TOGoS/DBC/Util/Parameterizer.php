@@ -1,11 +1,23 @@
 <?php
 
-namespace TOGoS\DBC\Util;
+class TOGoS_DBC_Util_Parameterizer_Replacer
+{
+	protected $sql, $args, $parameterizer;
+	public function __construct($sql,$args,$parameterizer) {
+		$this->sql = $sql;
+		$this->args = $args;
+		$this->parameterizer = $parameterizer;
+	}
+	
+	public function __invoke( $bif ) {
+		if( !array_key_exists($bif[1],$this->args) ) {
+			throw new TOGoS_DBC_SQLException( "Unspecified parameter {{$bif[0]}}", $this->sql, $this->args );
+		}
+		return $this->parameterizer->sqlEncode($this->args[$bif[1]]);
+	}
+}
 
-use TOGoS\DBC\SQLException;
-use TOGoS\DBC\SQLLiteral;
-
-class Parameterizer
+class TOGoS_DBC_Util_Parameterizer
 {
 	public static $instance;
 	public static function getInstance() {
@@ -30,23 +42,17 @@ class Parameterizer
 			return 'TRUE';
 		} else if( $value === false ) {
 			return 'FALSE';
-		} else if( $value instanceof SQLLiteral ) {
+		} else if( $value instanceof TOGoS_DBC_SQLLiteral ) {
 			return (string)$value;
 		} else if( $value === null ) {
 			return 'NULL';
 		} else {
-			throw new SQLException( "Don't know how to SQL-encode value of type/class ".gettype($value).'/'.@get_class($value) );
+			throw new TOGoS_DBC_SQLException( "Don't know how to SQL-encode value of type/class ".gettype($value).'/'.@get_class($value) );
 		}
 	}
 	
 	public function parameterize( $sql, $args ) {
-		$usedVars = array();
 		$parameterizer = $this;
-		return preg_replace_callback( '/{([^}]+)}/', function($bif) use ($sql,$args,$parameterizer) {
-			if( !array_key_exists($bif[1],$args) ) {
-				throw new SQLException( "Unspecified parameter {$bif[0]}", $sql, $args );
-			}
-			return $parameterizer->sqlEncode($args[$bif[1]]);
-		}, $sql);
+		return preg_replace_callback( '/{([^}]+)}/', array(new TOGoS_DBC_Util_Parameterizer_Replacer($sql,$args,$parameterizer),'__invoke'), $sql );
 	}
 }

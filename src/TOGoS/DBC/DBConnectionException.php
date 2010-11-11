@@ -1,5 +1,3 @@
 <?php
 
-namespace TOGoS\DBC;
-
-class DBConnectionException extends DBException { }
+class TOGoS_DBC_DBConnectionException extends TOGoS_DBC_DBException { }

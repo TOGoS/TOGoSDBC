@@ -1,29 +1,20 @@
 <?php
 
-namespace TOGoS\DBC\MySQL;
-
-use Exception;
-use PHPUnit\Framework\TestCase;
-use TOGoS\DBC;
-use TOGoS\DBC\SQLIdentifier;
-use TOGoS\DBC\SQLException;
-use TOGoS\DBC\TestConfig;
-
 /**
  * Test that we can connect to the master DB server and run some queries.
  */
-class MySQLExecutorTest extends TestCase
+class TOGoS_DBC_MySQL_MySQLExecutorTest extends PHPUnit_Framework_TestCase
 {
 	public function setUp() {
-		if( TestConfig::$mysqlTestConfig === null ) {
+		if( TOGoS_DBC_TestConfig::$mysqlTestConfig === null ) {
 			$this->markTestSkipped("TOGoS\\DBC\\TestConfig::\$mysqlTestConfig undefined.");
 			return;
 		}
-		$this->executor = DBC::createExecutorFromConfig(TestConfig::$mysqlTestConfig);
+		$this->executor = TOGoS_DBC::createExecutorFromConfig(TOGoS_DBC_TestConfig::$mysqlTestConfig);
 	}
 	
 	public function testCreateTable() {
-		$table = new SQLIdentifier("TestTable".rand(0,9999));
+		$table = new TOGoS_DBC_SQLIdentifier("TestTable".rand(0,9999));
 		$res = $this->executor->execute( "CREATE TABLE {table} ( ID INT PRIMARY KEY, Bar VARCHAR(10) )", array('table'=>$table) );
 		try {
 			$res = $this->executor->execute( "INSERT INTO {table} VALUES ( {id}, {bar} )", array('table'=>$table,'id'=>1,'bar'=>'Barry') );
@@ -35,7 +26,7 @@ class MySQLExecutorTest extends TestCase
 			try {
 				$res = $this->executor->execute( "INSERT INTO {table} VALUES ( {id}, {bar} )", array('table'=>$table,'id'=>2,'bar'=>'Harry') );
 				$this->fail( "Inserting duplicate primary key should have caused exception" );
-			} catch( SQLException $e ) {
+			} catch( TOGoS_DBC_SQLException $e ) {
 			}
 
 			$res = $this->executor->execute( "SELECT * FROM {table}", array('table'=>$table) );

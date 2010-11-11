@@ -1,8 +1,6 @@
 <?php
 
-namespace TOGoS\DBC;
-
-interface SQLResult extends \IteratorAggregate
+interface TOGoS_DBC_SQLResult extends IteratorAggregate
 {
 	/**
 	 * @returns array an array of associative arrays, one per result row;

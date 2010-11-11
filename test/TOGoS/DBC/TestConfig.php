@@ -1,12 +1,10 @@
 <?php
 
-namespace TOGoS\DBC;
-
 /**
  * Static variables for holding configuration information 
  * needed by some unit tests.
  */
-class TestConfig
+class TOGoS_DBC_TestConfig
 {
 	public static $mysqlTestConfig;
 }

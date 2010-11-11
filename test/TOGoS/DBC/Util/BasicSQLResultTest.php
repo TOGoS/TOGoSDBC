@@ -1,13 +1,9 @@
 <?php
 
-namespace TOGoS\DBC\Util;
-
-use PHPUnit\Framework\TestCase;
-
-class BasicSQLResultTest extends TestCase
+class TOGoS_DBC_Util_BasicSQLResultTest extends PHPUnit_Framework_TestCase
 {
 	public function testGetAffectedRowCount() {
-		$sqlResult = new BasicSQLResult( 0, array(
+		$sqlResult = new TOGoS_DBC_Util_BasicSQLResult( 0, array(
 			array('x'=>'1','y'=>'2'),
 			array('x'=>'3','y'=>'4'),
 		));

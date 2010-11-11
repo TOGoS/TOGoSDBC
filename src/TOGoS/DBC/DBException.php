@@ -1,9 +1,3 @@
 <?php
 
-namespace TOGoS\DBC;
-
-use Exception;
-
-class DBException extends Exception
-{
-}
+class TOGoS_DBC_DBException extends Exception { }

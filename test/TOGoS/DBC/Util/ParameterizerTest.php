@@ -1,16 +1,9 @@
 <?php
 
-namespace TOGoS\DBC\Util;
-
-use PHPUnit\Framework\TestCase;
-use TOGoS\DBC\SQLException;
-use TOGoS\DBC\SQLIdentifier;
-use TOGoS\DBC\SQLLiteral;
-
-class ParameterizerTest extends TestCase
+class TOGoS_DBC_Util_ParameterizerTest extends PHPUnit_Framework_TestCase
 {
 	function setUp() {
-		$this->PZR = Parameterizer::getInstance();
+		$this->PZR = TOGoS_DBC_Util_Parameterizer::getInstance();
 	}
 
 	function testNoParameters() {
@@ -39,14 +32,14 @@ class ParameterizerTest extends TestCase
 	function testIdentifierParameter() {
 		$this->assertEquals( "select `Foo``Bar` from `Baz`",
 							 $this->PZR->parameterize("select {column} from {table}",
-													  array('column'=>new SQLIdentifier('Foo`Bar'),
-															'table'=>new SQLIdentifier('Baz'))));
+													  array('column'=>new TOGoS_DBC_SQLIdentifier('Foo`Bar'),
+															'table'=>new TOGoS_DBC_SQLIdentifier('Baz'))));
 	}
 	function testSomeParameters() {
 		$e = "select Mass from Thing where ID = 456 or Name in ('Coffee Cup','Radish')";
 		$i = "select {column} from {table} where ID = {id} or Name in {names}";
-		$a = array('column'=>new SQLLiteral('Mass'),
-				   'table'=>new SQLLiteral('Thing'),
+		$a = array('column'=>new TOGoS_DBC_SQLLiteral('Mass'),
+				   'table'=>new TOGoS_DBC_SQLLiteral('Thing'),
 				   'id'=>456,
 				   'names'=>array('Coffee Cup','Radish'));
 		$this->assertEquals( $e, $this->PZR->parameterize($i,$a) );
@@ -57,7 +50,7 @@ class ParameterizerTest extends TestCase
 		try {
 			$this->PZR->parameterize($sql,$args);
 			$this->fail("Parameterizer should have thrown SQLException due to missing arguments");
-		} catch( SQLException $e ) {
+		} catch( TOGoS_DBC_SQLException $e ) {
 		}
 	}
 }

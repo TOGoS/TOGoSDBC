@@ -1,12 +1,8 @@
 <?php
 
-namespace TOGoS;
+require_once 'TOGoS/DBC/MySQL/MySQLExecutor.php';
 
-use Exception;
-use TOGoS\DBC\DBConnectionException;
-use TOGoS\DBC\MySQL\MySQLExecutor;
-
-class DBC
+class TOGoS_DBC
 {
 	public static function createExecutorFromConfig( $conf ) {
 		if( !is_array($conf) ) {
@@ -15,7 +11,7 @@ class DBC
 		}
 		$driver = $conf['driver'];
 		if( $driver == 'mysql' ) {
-			return MySQLExecutor::createFromConfig( $conf );
+			return TOGoS_DBC_MySQL_MySQLExecutor::createFromConfig( $conf );
 		} else {
 			throw new Exception( "Unsupported DB driver: $driver" );
 		}

@@ -1,8 +1,6 @@
 <?php
 
-namespace TOGoS\DBC;
-
-class SQLIdentifier extends SQLLiteral
+class TOGoS_DBC_SQLIdentifier extends TOGoS_DBC_SQLLiteral
 {
 	protected $name;
 	public function __construct($name) {

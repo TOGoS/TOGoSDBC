@@ -1,11 +1,9 @@
 <?php
 
-namespace TOGoS\DBC;
-
 /**
  * Thrown when there is an error parameterizing SQL or executing an SQL statement
  */
-class SQLException extends DBException
+class TOGoS_DBC_SQLException extends TOGoS_DBC_DBException
 {
 	protected $sql;
 	protected $args;

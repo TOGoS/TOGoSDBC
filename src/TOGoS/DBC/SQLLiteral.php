@@ -1,8 +1,6 @@
 <?php
 
-namespace TOGoS\DBC;
-
-class SQLLiteral
+class TOGoS_DBC_SQLLiteral
 {
 	protected $sql;
 	public function __construct($sql) {
