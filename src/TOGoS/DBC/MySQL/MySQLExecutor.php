@@ -1,6 +1,6 @@
 <?php
 
-class TOGoS_DBC_MySQLExecutor implements TOGoS_DBC_SQLExecutor
+class TOGoS_DBC_MySQL_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 {
 	public static function createFromConfig( $conf ) {
 		$host = $conf['host'];
@@ -21,7 +21,7 @@ class TOGoS_DBC_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 		if( $db = @$conf['database'] ) {
 			mysql_select_db( $db, $mysqlLink );
 		}
-		return new MySQLExecutor($mysqlLink);
+		return new TOGoS_DBC_MySQL_MySQLExecutor($mysqlLink);
 	}
 	
 	////
@@ -34,7 +34,7 @@ class TOGoS_DBC_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 	}
 	
 	public function execute( $inSql, array $args=array() ) {
-		$sql = MySQLParameterizer::getInstance()->parameterize( $inSql, $args );
+		$sql = TOGoS_DBC_MySQL_MySQLParameterizer::getInstance()->parameterize( $inSql, $args );
 		foreach( $this->queryListeners as $l ) {
 			call_user_func( $l, $inSql, $args, $sql );
 		}

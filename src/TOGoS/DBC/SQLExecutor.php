@@ -1,8 +1,6 @@
 <?php
 
-namespace TOGoS\DBC;
-
-interface SQLExecutor
+interface TOGoS_DBC_SQLExecutor
 {
 	/**
 	 * @param string $sql String of SQL, possibly with {parameters}

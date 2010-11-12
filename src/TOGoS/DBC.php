@@ -1,7 +1,5 @@
 <?php
 
-require_once 'TOGoS/DBC/MySQL/MySQLExecutor.php';
-
 class TOGoS_DBC
 {
 	public static function createExecutorFromConfig( $conf ) {

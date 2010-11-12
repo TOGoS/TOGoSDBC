@@ -1,6 +1,6 @@
 <?php
 
-class TOGoS_DBC_Util_MySQLParameterizer extends TOGoS_DBC_MySQL_Parameterizer
+class TOGoS_DBC_MySQL_MySQLParameterizer extends TOGoS_DBC_Util_Parameterizer
 {
 	public static $instance;
 	public static function getInstance() {
