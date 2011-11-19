@@ -1,0 +1,21 @@
+== Running unit tests ==
+
+Install PHPUnit (I like to use 3.4.9 because it's easy to install and hack fixes into).
+
+In order to run tests that need to connect to an actual database,
+create a file in this directory called unittest-config.php.  Mine
+looks like this:
+
+	<?php
+
+	TOGoS_DBC_TestConfig::$mysqlTestConfig = array(
+		'driver' => 'mysql',
+		'host' => 'lokelhost',
+		'port' => 5506,
+		'user' => 'unittest',
+		'password' => 'unittest',
+		'database' => 'dbc_unittest',
+	);
+
+dbc_unittest is a blank database dedicated soely to testing the
+SQLExecutor objects.  The unittest user has all privileges in it.

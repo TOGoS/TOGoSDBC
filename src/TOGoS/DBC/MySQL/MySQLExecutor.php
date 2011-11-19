@@ -26,21 +26,42 @@ class TOGoS_DBC_MySQL_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 	
 	////
 
+	protected $config;
 	protected $mysqlLink;
+	protected $parameterizer;
 	protected $queryListeners = array();
 	
-	public function __construct( $mysqlLink ) {
-		$this->mysqlLink = $mysqlLink;
+	public function __construct( $config ) {
+		if( is_resource($config) ) {
+			$this->mysqlLink = $config;
+		} else {
+			$this->config = $config;
+		}
 	}
 	
+	public function getConnection() {
+		if( $this->mysqlLink === null ) {
+			$this->mysqlLink = self::connect( $this->config );
+		}
+		return $this->mysqlLink;
+	}
+	
+	protected function getParameterizer() {
+		if( $this->parameterizer === null ) {
+			$this->parameterizer = new TOGoS_DBC_MySQL_MySQLParameterizer($this->getConnection());
+		}
+		return $this->parameterizer;
+	}
+		
 	public function execute( $inSql, array $args=array() ) {
-		$sql = TOGoS_DBC_MySQL_MySQLParameterizer::getInstance()->parameterize( $inSql, $args );
+		$sql = $this->getParameterizer()->parameterize( $inSql, $args );
 		foreach( $this->queryListeners as $l ) {
 			call_user_func( $l, $inSql, $args, $sql );
 		}
-		$mysqlResult = mysql_query( $sql, $this->mysqlLink );
+		$link = $this->getConnection();
+		$mysqlResult = mysql_query( $sql, $link );
 		if( $mysqlResult === false ) {
-			throw new TOGoS_DBC_SQLException( mysql_error($this->mysqlLink), $sql );
+			throw new TOGoS_DBC_SQLException( mysql_error($link), $sql );
 		}
 		$rows = array();
 		if( is_resource($mysqlResult) ) {
@@ -48,7 +69,7 @@ class TOGoS_DBC_MySQL_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 				$rows[] = $row;
 			}
 		} 
-		$affectedRowCount = mysql_affected_rows($this->mysqlLink);
+		$affectedRowCount = mysql_affected_rows($link);
 		return new TOGoS_DBC_Util_BasicSQLResult( $affectedRowCount, $rows );
 	}
 	
