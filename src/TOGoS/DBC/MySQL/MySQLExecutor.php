@@ -3,6 +3,10 @@
 class TOGoS_DBC_MySQL_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 {
 	public static function createFromConfig( $conf ) {
+		return new TOGoS_DBC_MySQL_MySQLExecutor( $conf );
+	}
+	
+	public static function connect( $conf ) {
 		$host = $conf['host'];
 		if( $port = $conf['port'] ) {
 			$host .= ":$port";
@@ -13,15 +17,15 @@ class TOGoS_DBC_MySQL_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 		$flags = @$conf['flags'] or $flags = 0;
 		$mysqlLink = mysql_connect( $host, $user, $pass, $newLink, $flags );
 		if( $mysqlLink === false ) {
-			throw new TOGoS_DBC_DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
+			throw new Kap_CartLib_DBC_DBConnectionException( "Could not connect to MySQL $user@$host: ".mysql_error() );
 		}
 		if( $charset = @$conf['charset'] ) {
 			mysql_set_charset( $charset, $mysqlLink );
-		} 
+		}
 		if( $db = @$conf['database'] ) {
 			mysql_select_db( $db, $mysqlLink );
 		}
-		return new TOGoS_DBC_MySQL_MySQLExecutor($mysqlLink);
+		return $mysqlLink;
 	}
 	
 	////
