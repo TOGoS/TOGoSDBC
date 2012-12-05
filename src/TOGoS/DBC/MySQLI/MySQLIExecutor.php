@@ -81,12 +81,23 @@ class TOGoS_DBC_MySQLI_MySQLIExecutor implements TOGoS_DBC_SQLExecutor
 		// $rows = $result->fetch_all(MYSQLI_ASSOC); // Not available < PHP 5.3
 		if( $result ) {
 			for( $rows = array(); $row = $result->fetch_assoc(); $rows[] = $row );
+			$result->free();
 		} else {
 			// This can happen if the query was not a SELECTing one.
 			$rows = array();
 		}
 		$affectedRowCount = $link->affected_rows;
 		$insertId = $link->insert_id;
+		
+		// Calling stored procedures for some reason generates an extra
+		// recordset.  Since TOGoSDBC doesn't support multiple result
+		// sets anyway, this will work around that:
+		while( $link->more_results() ) {
+			if( $link->next_result() && $extraResult = $link->store_result() ) {
+				$extraResult->free();
+			}
+		}
+
 		return new TOGoS_DBC_Util_BasicSQLResult( $rows, $affectedRowCount, $insertId );
 	}
 	
