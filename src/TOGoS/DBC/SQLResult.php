@@ -15,6 +15,12 @@ interface TOGoS_DBC_SQLResult extends IteratorAggregate
 	public function getAffectedRowCount();
 	
 	/**
+	 * If new records with auto-incremented IDs were added, this should return
+	 * the latest such ID.
+	 */
+	public function getLastInsertId();
+	
+	/**
 	 * @return Iterator that will iterate over the result rows.
 	 *   This can be expected to be called only once and not in combination
 	 *   with getRows.

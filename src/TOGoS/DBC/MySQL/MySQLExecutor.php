@@ -74,7 +74,8 @@ class TOGoS_DBC_MySQL_MySQLExecutor implements TOGoS_DBC_SQLExecutor
 			}
 		} 
 		$affectedRowCount = mysql_affected_rows($link);
-		return new TOGoS_DBC_Util_BasicSQLResult( $affectedRowCount, $rows );
+		$insertId = mysql_insert_id($link);
+		return new TOGoS_DBC_Util_BasicSQLResult( $rows, $affectedRowCount, $insertId );
 	}
 	
 	/** Interface for this may change - don't depend on it. */

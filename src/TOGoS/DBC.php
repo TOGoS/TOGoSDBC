@@ -5,13 +5,15 @@ class TOGoS_DBC
 	public static function createExecutorFromConfig( $conf ) {
 		if( !is_array($conf) ) {
 			throw new LogicException("Config must be an array for now; ".
-									 "given".gettype($conf) );
+			                         "given ".var_export($conf,true) );
 		}
-		$driver = $conf['driver'];
-		if( $driver == 'mysql' ) {
+		switch( $conf['driver'] ) {
+		case( 'mysql' ):
 			return TOGoS_DBC_MySQL_MySQLExecutor::createFromConfig( $conf );
-		} else {
-			throw new Exception( "Unsupported DB driver: $driver" );
+		case( 'mysqli' ):
+			return TOGoS_DBC_MySQLI_MySQLIExecutor::createFromConfig( $conf );
+		default:
+			throw new Exception( "Unsupported DB driver: {$conf['driver']}" );
 		}
 	}
 }

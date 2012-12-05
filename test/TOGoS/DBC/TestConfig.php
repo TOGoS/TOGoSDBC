@@ -7,4 +7,5 @@
 class TOGoS_DBC_TestConfig
 {
 	public static $mysqlTestConfig;
+	public static $mysqliTestConfig;
 }

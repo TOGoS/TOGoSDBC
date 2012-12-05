@@ -6,12 +6,14 @@
  */
 class TOGoS_DBC_Util_BasicSQLResult implements TOGoS_DBC_SQLResult
 {
-	protected $affectedRowCount;
 	protected $rows;
+	protected $affectedRowCount;
+	protected $insertId;
 
-	public function __construct( $affectedRowCount, $rows ) {
-		$this->affectedRowCount = $affectedRowCount;
+	public function __construct( array $rows, $affectedRowCount, $insertId ) {
 		$this->rows = $rows;
+		$this->affectedRowCount = $affectedRowCount;
+		$this->insertId = $insertId;
 	}
 	
 	public function getIterator() {
@@ -24,5 +26,9 @@ class TOGoS_DBC_Util_BasicSQLResult implements TOGoS_DBC_SQLResult
 	
 	public function getAffectedRowCount() {
 		return $this->affectedRowCount;
+	}
+	
+	public function getLastInsertId() {
+		return $this->insertId;
 	}
 }
