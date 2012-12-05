@@ -11,7 +11,7 @@ class TOGoS_DBC
 		case( 'mysql' ):
 			return TOGoS_DBC_MySQL_MySQLExecutor::createFromConfig( $conf );
 		case( 'mysqli' ):
-			return TOGoS_DBC_MySQLI_MySQLIExecutor::createFromConfig( $conf );
+			return TOGoS_DBC_MySQLi_MySQLiExecutor::createFromConfig( $conf );
 		default:
 			throw new Exception( "Unsupported DB driver: {$conf['driver']}" );
 		}

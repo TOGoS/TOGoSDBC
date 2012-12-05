@@ -1,9 +1,9 @@
 <?php
 
-class TOGoS_DBC_MySQLI_MySQLIExecutor implements TOGoS_DBC_SQLExecutor
+class TOGoS_DBC_MySQLi_MySQLiExecutor implements TOGoS_DBC_SQLExecutor
 {
 	public static function createFromConfig( $conf ) {
-		return new TOGoS_DBC_MySQLI_MySQLIExecutor( $conf );
+		return new TOGoS_DBC_MySQLi_MySQLiExecutor( $conf );
 	}
 	
 	public static function connect( $conf ) {
@@ -19,7 +19,7 @@ class TOGoS_DBC_MySQLI_MySQLIExecutor implements TOGoS_DBC_SQLExecutor
 		// Avoid $link->connect_error as it's reported to be, like most things in PHP, broken:
 		if( mysqli_connect_error() ) {
 			throw new Kap_CartLib_DBC_DBConnectionException(
-				"Could not connect to MySQLI $user@$host: ".
+				"Could not connect to MySQLi $user@$host: ".
 				'#'.mysqli_connect_errno().' '.
 				mysqli_connect_error()."; Settings = ".var_export($conf,true) );
 		}
@@ -60,7 +60,7 @@ class TOGoS_DBC_MySQLI_MySQLIExecutor implements TOGoS_DBC_SQLExecutor
 	
 	protected function getParameterizer() {
 		if( $this->parameterizer === null ) {
-			$this->parameterizer = new TOGoS_DBC_MySQLI_MySQLIParameterizer($this->getConnection());
+			$this->parameterizer = new TOGoS_DBC_MySQLi_MySQLiParameterizer($this->getConnection());
 		}
 		return $this->parameterizer;
 	}
